@@ -54,6 +54,22 @@ body {
       margin-bottom: 2rem;
     }
 
+    &.task {
+      cursor: pointer;
+
+      &.edit {
+        cursor: default;
+
+        &:hover {
+          background: white;
+        }
+      }
+
+      &:hover {
+        background: lighten($blue, 56%);
+      }
+    }
+
     .main-container {
       display: flex;
 

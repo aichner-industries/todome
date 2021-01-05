@@ -36,6 +36,22 @@ import soundOne from "../../../assets/sfx/1.mp3";
 import "./HomePage.scss";
 //#endregion
 
+//#region > Functions
+const saveToLS = (tasks) => {
+  if (tasks) {
+    const taskJSON = JSON.stringify(tasks);
+
+    localStorage.setItem("tasks", taskJSON);
+  }
+};
+
+const rememberOpen = (type, value) => {
+  if (type) {
+    localStorage.setItem(type, value);
+  }
+};
+//#endregion
+
 //#region > Components
 class HomePage extends React.Component {
   state = {
@@ -43,7 +59,32 @@ class HomePage extends React.Component {
     tempDone: [],
     enterTask: "",
     showOpen: true,
-    showDone: false,
+  };
+
+  componentDidMount = () => {
+    const savedTasks = localStorage.getItem("tasks");
+    const showDone = localStorage.getItem("show_done");
+
+    console.log(showDone);
+
+    if (savedTasks) {
+      const tasks = JSON.parse(savedTasks);
+
+      this.setState({
+        tasks,
+        showDone: showDone === "true" ? true : false,
+      });
+    }
+  };
+
+  componentDidUpdate = (prevState) => {
+    if (prevState.tasks !== this.state.tasks) {
+      saveToLS(this.state.tasks);
+    }
+
+    if (prevState.showDone !== this.state.showDone) {
+      rememberOpen("show_done", this.state.showDone);
+    }
   };
 
   toggleCollapse = (collapseID) => {
@@ -80,12 +121,16 @@ class HomePage extends React.Component {
       this.setState({
         tasks: [...otherTasks],
       });
+    } else if (e.key === "Enter" && uuid) {
+      this.saveTask(uuid);
     }
   };
 
   finishTask = (uuid) => {
     if (uuid) {
       const { tasks } = this.state;
+
+      this.playSound();
 
       const otherTasks = tasks.filter((task) => task.uuid !== uuid);
       const selectedTask = tasks.filter((task) => task.uuid === uuid)[0];
@@ -100,10 +145,9 @@ class HomePage extends React.Component {
         this.setState(
           {
             tempDone: [...this.state.tempDone, uuid],
+            showDone: true,
           },
           () => {
-            this.playSound();
-
             setTimeout(() => {
               const otherTempDone = this.state.tempDone.filter(
                 (task) => task !== uuid
@@ -111,7 +155,6 @@ class HomePage extends React.Component {
 
               this.setState({
                 tasks: [...otherTasks, alteredTask],
-                showDone: true,
                 tempDone: [...otherTempDone],
               });
             }, 250);
@@ -133,6 +176,46 @@ class HomePage extends React.Component {
           ...selectedTask,
           done: false,
           altered: new Date().getTime(),
+        };
+
+        this.setState({
+          tasks: [...otherTasks, alteredTask],
+        });
+      }
+    }
+  };
+
+  editTask = (uuid) => {
+    if (uuid) {
+      const { tasks } = this.state;
+
+      const otherTasks = tasks.filter((task) => task.uuid !== uuid);
+      const selectedTask = tasks.filter((task) => task.uuid === uuid)[0];
+
+      if (selectedTask) {
+        const alteredTask = {
+          ...selectedTask,
+          edit: true,
+        };
+
+        this.setState({
+          tasks: [...otherTasks, alteredTask],
+        });
+      }
+    }
+  };
+
+  saveTask = (uuid) => {
+    if (uuid) {
+      const { tasks } = this.state;
+
+      const otherTasks = tasks.filter((task) => task.uuid !== uuid);
+      const selectedTask = tasks.filter((task) => task.uuid === uuid)[0];
+
+      if (selectedTask) {
+        const alteredTask = {
+          ...selectedTask,
+          edit: false,
         };
 
         this.setState({
@@ -252,7 +335,11 @@ class HomePage extends React.Component {
                       >
                         {openTasks.map((task, t) => {
                           return (
-                            <MDBListGroupItem key={task.uuid}>
+                            <MDBListGroupItem
+                              key={task.uuid}
+                              className={task.edit ? "task edit" : "task"}
+                              onClick={() => this.editTask(task.uuid)}
+                            >
                               <div className="main-container">
                                 <div>
                                   <MDBInput
@@ -276,25 +363,35 @@ class HomePage extends React.Component {
                                     id={"checkbox-" + task.uuid}
                                   />
                                 </div>
-                                <div className="d-flex">
-                                  <MDBInput
-                                    type="text"
-                                    value={task.value}
-                                    disabled={
-                                      this.state.tempDone.filter(
-                                        (tempTask) => tempTask === task.uuid
-                                      )[0]
-                                        ? true
-                                        : false
-                                    }
-                                    onKeyDown={(e) =>
-                                      this.handleKeyDown(e, task.uuid)
-                                    }
-                                    getValue={(val) =>
-                                      this.changeOpen(task.uuid, val)
-                                    }
-                                  />
-                                </div>
+                                {task.edit ? (
+                                  <div className="d-flex justify-content-between">
+                                    <MDBInput
+                                      type="text"
+                                      containerClass="w-100"
+                                      autoFocus
+                                      ref={(elem) => (this[task.uuid] = elem)}
+                                      value={task.value}
+                                      disabled={
+                                        this.state.tempDone.filter(
+                                          (tempTask) => tempTask === task.uuid
+                                        )[0]
+                                          ? true
+                                          : false
+                                      }
+                                      onKeyDown={(e) =>
+                                        this.handleKeyDown(e, task.uuid)
+                                      }
+                                      getValue={(val) =>
+                                        this.changeOpen(task.uuid, val)
+                                      }
+                                      onBlur={() => this.saveTask(task.uuid)}
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className="px-3 py-2 text-left task-value">
+                                    {task.value}
+                                  </div>
+                                )}
                               </div>
                             </MDBListGroupItem>
                           );
@@ -373,7 +470,7 @@ class HomePage extends React.Component {
                                   id={"checkbox-" + task.uuid}
                                 />
                               </div>
-                              <div className="pl-3 text-left task-value">
+                              <div className="px-3 py-2 text-left task-value">
                                 {task.value}
                               </div>
                             </div>
