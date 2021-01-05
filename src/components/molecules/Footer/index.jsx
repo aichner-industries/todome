@@ -42,29 +42,17 @@ class Footer extends React.Component {
       <MDBFooter color="white" className="font-small">
         <MDBContainer className="text-center text-md-left py-3">
           <MDBRow className="flex-center">
-            <MDBCol md="3" className="text-center">
-              <Link to="about">
-                <li className="list-unstyled">About</li>
-              </Link>
-              <Link to="privacy">
-                <li className="list-unstyled">Privacy</li>
-              </Link>
-            </MDBCol>
+            <MDBCol md="3" className="text-center"></MDBCol>
             <MDBCol md="2" className="my-3 text-center">
               <img src={logoImg} alt="Logo" className="img-fluid" />
             </MDBCol>
-            <MDBCol md="3" className="text-center">
-              <Link to="contact">
-                <li className="list-unstyled">Contact</li>
-              </Link>
-            </MDBCol>
+            <MDBCol md="3" className="text-center"></MDBCol>
           </MDBRow>
         </MDBContainer>
         <div className="footer-copyright text-center py-3">
           <MDBContainer fluid>
             <div>
-              &copy; {new Date().getFullYear()} Copyright: Werbeagentur
-              Christian Aichner
+              &copy; {new Date().getFullYear()} Copyright: Christian Aichner
               <p className="my-2 font-weight-bold">
                 Made with
                 <i
@@ -73,7 +61,7 @@ class Footer extends React.Component {
                 ></i>
                 by
                 <a
-                  href="https://www.aichner-christian.com"
+                  href="https://www.aichner.industries"
                   target="_blank"
                   className="ml-1"
                   rel="noopener noreferrer"
@@ -85,6 +73,14 @@ class Footer extends React.Component {
             </div>
             <div>
               <small>
+                <a
+                  className="text-muted"
+                  href="https://www.aichner.industries/about"
+                  target="_blank"
+                >
+                  Impressum
+                </a>
+                <span className="pl-2 pr-2">·</span>
                 Stable release
                 {process.env.REACT_APP_VERSION && (
                   <>
@@ -92,24 +88,6 @@ class Footer extends React.Component {
                     Version v{process.env.REACT_APP_VERSION}
                   </>
                 )}
-                <span className="pl-2 pr-2">·</span>
-                <a
-                  href="https://github.com/aichner/Gutschein2Go"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <MDBIcon fab icon="github" className="pr-2" />
-                  View on GitHub
-                </a>
-                <span className="pl-2 pr-2">·</span>
-                <a
-                  href="https://github.com/aichner/Gutschein2Go/issues/new?template=bug_report.md"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <MDBIcon icon="bug" className="pr-2" />
-                  Report bug
-                </a>
               </small>
             </div>
           </MDBContainer>

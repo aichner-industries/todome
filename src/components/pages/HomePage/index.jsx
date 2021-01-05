@@ -488,20 +488,20 @@ class HomePage extends React.Component {
           <MDBContainer>
             <MDBRow>
               <MDBCol md="12" className="mt-4">
-                <h2 className="text-center my-5 font-weight-bold">
+                <h2 className="text-center mt-5 mb-3 font-weight-bold">
                   Share. Collaborate. Build.
                 </h2>
                 <p className="text-center text-muted mb-1">
-                  Google has designed a Material Design to make the web more
-                  beautiful and more user-friendly.
+                  TodoMe has been built around the thought of instant sharing,
+                  collaboration and building.
                 </p>
                 <p className="text-center text-muted mb-1">
-                  Twitter has created a Bootstrap to support you in faster and
-                  easier development of responsive and effective websites.
+                  Without the need for registration and costly fees. Easy to use
+                  and intuitive.
                 </p>
                 <p className="text-center text-muted">
-                  We present you a framework containing the best features of
-                  both of them - Material Design for Bootstrap.
+                  We are constantly updating the features to make this tool even
+                  more useful for you and your team.
                 </p>
               </MDBCol>
             </MDBRow>
