@@ -1,18 +1,62 @@
+@import "../../../utilities/variables";
+
 body {
   background: #fff;
 }
 
 .list-group {
+  p {
+    &.font-weight-bold {
+      cursor: pointer;
+    }
+
+    .fa-angle-down {
+      transform: rotate(0deg);
+      transition: transform 0.2s linear;
+      margin-right: 0.2rem;
+
+      &.open {
+        transform: rotate(180deg);
+        transition: transform 0.2s linear;
+      }
+    }
+  }
+
+  .open-tasks {
+    .form-check-input[type="checkbox"]:checked:disabled + label:before,
+    label.btn input[type="checkbox"]:checked:disabled + label:before {
+      border-right: 2px solid $green;
+      border-bottom: 2px solid $green;
+    }
+  }
+
+  .done-tasks {
+    .form-check-input[type="checkbox"]:checked + label:before {
+      border-right: 2px solid lightgrey;
+      border-bottom: 2px solid lightgrey;
+    }
+
+    .task-value {
+      text-decoration: line-through;
+    }
+  }
+
   .list-group-item {
     padding: 0;
     border: none;
 
-    &:first-child {
+    .position-absolute {
+      right: 0;
+      top: 0;
+    }
+
+    &.first {
       margin-bottom: 2rem;
     }
 
     .main-container {
       display: flex;
+
       div {
         display: inline-block;
 

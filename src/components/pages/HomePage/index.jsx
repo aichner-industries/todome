@@ -2,6 +2,10 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+//> Unique ID
+import { v4 } from "uuid";
+//> Sound
+import UIfx from "uifx";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -21,15 +25,12 @@ import {
   MDBListGroupItem,
   MDBInput,
   MDBBtn,
+  MDBCollapse,
+  MDBCollapseHeader,
 } from "mdbreact";
 
-//> Images
-// Logo of MDB React
-import MDBLogo from "../../../assets/mdb-react-small.png";
-// Logo of Advertisement Agency Christian Aichner
-import AgencyLogo from "../../../assets/agency-small.png";
-// Image of someone coding
-import Projects from "../../../assets/content/projects.jpg";
+//> SFX
+import soundOne from "../../../assets/sfx/1.mp3";
 
 //> CSS
 import "./HomePage.scss";
@@ -39,27 +40,148 @@ import "./HomePage.scss";
 class HomePage extends React.Component {
   state = {
     tasks: [],
+    tempDone: [],
     enterTask: "",
+    showOpen: true,
+    showDone: false,
   };
 
-  handleKeyDown = (e) => {
-    if (e.key === "Enter" && this.state.enterTask) {
+  toggleCollapse = (collapseID) => {
+    if (collapseID === "open") {
+      this.setState({ showOpen: !this.state.showOpen });
+    } else if (collapseID === "done") {
+      this.setState({ showDone: !this.state.showDone });
+    }
+  };
+
+  handleKeyDown = (e, uuid) => {
+    if (e.key === "Enter" && this.state.enterTask && !uuid) {
+      const ts = new Date().getTime();
+
       this.setState({
         tasks: [
           ...this.state.tasks,
           {
             value: this.state.enterTask,
-            timestamp: new Date().getTime(),
-            checked: false,
+            created: ts,
+            altered: ts,
+            done: false,
+            uuid: v4(),
           },
         ],
         enterChecked: false,
         enterTask: "",
       });
+    } else if (e.key === "Delete" && uuid) {
+      const { tasks } = this.state;
+
+      const otherTasks = tasks.filter((task) => task.uuid !== uuid);
+
+      this.setState({
+        tasks: [...otherTasks],
+      });
     }
   };
 
+  finishTask = (uuid) => {
+    if (uuid) {
+      const { tasks } = this.state;
+
+      const otherTasks = tasks.filter((task) => task.uuid !== uuid);
+      const selectedTask = tasks.filter((task) => task.uuid === uuid)[0];
+
+      if (selectedTask) {
+        const alteredTask = {
+          ...selectedTask,
+          done: true,
+          altered: new Date().getTime(),
+        };
+
+        this.setState(
+          {
+            tempDone: [...this.state.tempDone, uuid],
+          },
+          () => {
+            this.playSound();
+
+            setTimeout(() => {
+              const otherTempDone = this.state.tempDone.filter(
+                (task) => task !== uuid
+              );
+
+              this.setState({
+                tasks: [...otherTasks, alteredTask],
+                showDone: true,
+                tempDone: [...otherTempDone],
+              });
+            }, 250);
+          }
+        );
+      }
+    }
+  };
+
+  openTask = (uuid) => {
+    if (uuid) {
+      const { tasks } = this.state;
+
+      const otherTasks = tasks.filter((task) => task.uuid !== uuid);
+      const selectedTask = tasks.filter((task) => task.uuid === uuid)[0];
+
+      if (selectedTask) {
+        const alteredTask = {
+          ...selectedTask,
+          done: false,
+          altered: new Date().getTime(),
+        };
+
+        this.setState({
+          tasks: [...otherTasks, alteredTask],
+        });
+      }
+    }
+  };
+
+  changeOpen = (uuid, val) => {
+    if (uuid) {
+      const { tasks } = this.state;
+
+      const otherTasks = tasks.filter((task) => task.uuid !== uuid);
+      const selectedTask = tasks.filter((task) => task.uuid === uuid)[0];
+
+      if (selectedTask) {
+        const alteredTask = {
+          ...selectedTask,
+          value: val,
+        };
+
+        this.setState({
+          tasks: [...otherTasks, alteredTask],
+        });
+      }
+    }
+  };
+
+  playSound = () => {
+    const bell = new UIfx(soundOne, {
+      volume: 0.5, // number between 0.0 ~ 1.0
+      throttleMs: 100,
+    });
+
+    bell.play();
+  };
+
   render() {
+    const { tasks } = this.state;
+
+    console.log(tasks);
+
+    const sortedTasks = tasks.sort(function (a, b) {
+      return a.altered > b.altered ? -1 : 1;
+    });
+    const openTasks = sortedTasks.filter((tempTask) => !tempTask.done);
+    const finishedTasks = sortedTasks.filter((tempTask) => tempTask.done);
+
     return (
       <>
         <MDBEdgeHeader color="bg-blue" className="sectionPage" />
@@ -75,7 +197,7 @@ class HomePage extends React.Component {
                     Enhance your workflows
                   </h2>
                   <MDBListGroup>
-                    <MDBListGroupItem>
+                    <MDBListGroupItem className="first">
                       <div className="main-container">
                         <div>
                           <MDBInput
@@ -100,44 +222,165 @@ class HomePage extends React.Component {
                         </div>
                       </div>
                       {this.state.enterTask && (
-                        <div className="text-right">
-                          <p className="mb-0 small text-muted">
+                        <div className="text-right position-relative">
+                          <p className="mb-0 small text-muted position-absolute">
                             Press ENTER to add task
                           </p>
                         </div>
                       )}
                     </MDBListGroupItem>
-                    {this.state.tasks.length > 0 && (
-                      <p className="font-weight-bold text-left mb-0">
-                        Open tasks
-                      </p>
+                    <p
+                      className="font-weight-bold text-left mb-0"
+                      onClick={() => this.toggleCollapse("open")}
+                    >
+                      {openTasks.length > 0 && (
+                        <>
+                          {this.state.showOpen ? (
+                            <MDBIcon icon="angle-down" />
+                          ) : (
+                            <MDBIcon icon="angle-down" className="open" />
+                          )}
+                        </>
+                      )}
+                      Open tasks
+                    </p>
+                    {openTasks.length > 0 ? (
+                      <MDBCollapse
+                        id="open"
+                        isOpen={this.state.showOpen}
+                        className="open-tasks"
+                      >
+                        {openTasks.map((task, t) => {
+                          return (
+                            <MDBListGroupItem key={task.uuid}>
+                              <div className="main-container">
+                                <div>
+                                  <MDBInput
+                                    type="checkbox"
+                                    size="lg"
+                                    checked={
+                                      this.state.tempDone.filter(
+                                        (tempTask) => tempTask === task.uuid
+                                      )[0]
+                                        ? true
+                                        : false
+                                    }
+                                    disabled={
+                                      this.state.tempDone.filter(
+                                        (tempTask) => tempTask === task.uuid
+                                      )[0]
+                                        ? true
+                                        : false
+                                    }
+                                    onClick={() => this.finishTask(task.uuid)}
+                                    id={"checkbox-" + task.uuid}
+                                  />
+                                </div>
+                                <div className="d-flex">
+                                  <MDBInput
+                                    type="text"
+                                    value={task.value}
+                                    disabled={
+                                      this.state.tempDone.filter(
+                                        (tempTask) => tempTask === task.uuid
+                                      )[0]
+                                        ? true
+                                        : false
+                                    }
+                                    onKeyDown={(e) =>
+                                      this.handleKeyDown(e, task.uuid)
+                                    }
+                                    getValue={(val) =>
+                                      this.changeOpen(task.uuid, val)
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            </MDBListGroupItem>
+                          );
+                        })}
+                      </MDBCollapse>
+                    ) : (
+                      <>
+                        {finishedTasks.length > 0 ? (
+                          <p className="mb-0 text-muted text-left small mt-2 mb-4">
+                            You're all clear. Good work!
+                          </p>
+                        ) : (
+                          <p className="mb-0 text-muted text-left small mt-2">
+                            No tasks yet. Start by adding tasks
+                          </p>
+                        )}
+                      </>
                     )}
-                    {this.state.tasks.reverse().map((task, t) => {
-                      return (
-                        <MDBListGroupItem>
-                          <div className="main-container">
-                            <div>
-                              <MDBInput
-                                type="checkbox"
-                                size="lg"
-                                checked={this.state.enterChecked}
-                                onClick={(e) =>
-                                  this.setState({ test: e.target.enterChecked })
-                                }
-                                id="enterChecked"
-                              />
+                    {finishedTasks.length > 0 && (
+                      <>
+                        {openTasks.length > 0 ? (
+                          <>
+                            <p
+                              className="font-weight-bold text-left mb-0 mt-3"
+                              onClick={() => this.toggleCollapse("done")}
+                            >
+                              {finishedTasks.length > 0 && (
+                                <>
+                                  {this.state.showDone ? (
+                                    <MDBIcon icon="angle-down" />
+                                  ) : (
+                                    <MDBIcon
+                                      icon="angle-down"
+                                      className="open"
+                                    />
+                                  )}
+                                </>
+                              )}
+                              Completed tasks
+                            </p>
+                          </>
+                        ) : (
+                          <p
+                            className="font-weight-bold text-left mb-0"
+                            onClick={() => this.toggleCollapse("done")}
+                          >
+                            {finishedTasks.length > 0 && (
+                              <>
+                                {this.state.showDone ? (
+                                  <MDBIcon icon="angle-down" />
+                                ) : (
+                                  <MDBIcon icon="angle-down" className="open" />
+                                )}
+                              </>
+                            )}
+                            Completed tasks
+                          </p>
+                        )}
+                      </>
+                    )}
+                    <MDBCollapse
+                      id="done"
+                      isOpen={this.state.showDone}
+                      className="done-tasks"
+                    >
+                      {finishedTasks.map((task, t) => {
+                        return (
+                          <MDBListGroupItem key={task.uuid}>
+                            <div className="main-container">
+                              <div>
+                                <MDBInput
+                                  type="checkbox"
+                                  size="lg"
+                                  checked={true}
+                                  onClick={() => this.openTask(task.uuid)}
+                                  id={"checkbox-" + task.uuid}
+                                />
+                              </div>
+                              <div className="pl-3 text-left task-value">
+                                {task.value}
+                              </div>
                             </div>
-                            <div className="d-flex">
-                              <MDBInput
-                                type="text"
-                                value={task.value}
-                                onKeyDown={this.handleKeyDown}
-                              />
-                            </div>
-                          </div>
-                        </MDBListGroupItem>
-                      );
-                    })}
+                          </MDBListGroupItem>
+                        );
+                      })}
+                    </MDBCollapse>
                   </MDBListGroup>
                 </MDBCardBody>
               </MDBCol>
