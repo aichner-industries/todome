@@ -56,9 +56,10 @@ class Navbar extends React.Component {
               <Logo />
               <strong className="align-middle">TodoMe</strong>
             </MDBNavbarBrand>
-            <MDBNavbarToggler
-              onClick={this.toggleCollapse("mainNavbarCollapse")}
-            />
+            <strong className="button">
+              <MDBIcon icon="share" />
+              Share
+            </strong>
             <MDBCollapse
               id="mainNavbarCollapse"
               isOpen={this.state.collapseID}
