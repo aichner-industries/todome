@@ -282,29 +282,14 @@ class HomePage extends React.Component {
                   <MDBListGroup>
                     <MDBListGroupItem className="first">
                       <div className="main-container">
-                        <div>
-                          <MDBInput
-                            type="checkbox"
-                            size="lg"
-                            checked={this.state.enterChecked}
-                            onClick={(e) =>
-                              this.setState({ test: e.target.enterChecked })
-                            }
-                            id="enterChecked"
-                          />
-                        </div>
-                        <div className="d-flex">
-                          <MDBInput
-                            type="text"
-                            value={this.state.enterTask}
-                            getValue={(val) =>
-                              this.setState({ enterTask: val })
-                            }
-                            containerClass="add-task"
-                            onKeyDown={this.handleKeyDown}
-                            label="Add task"
-                          />
-                        </div>
+                        <MDBInput
+                          type="text"
+                          value={this.state.enterTask}
+                          getValue={(val) => this.setState({ enterTask: val })}
+                          containerClass="add-task mb-0"
+                          onKeyDown={this.handleKeyDown}
+                          label="Add task"
+                        />
                       </div>
                       {this.state.enterTask && (
                         <div className="text-right position-relative">
