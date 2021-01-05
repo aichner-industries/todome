@@ -71,9 +71,9 @@ class Navbar extends React.Component {
                     Share
                   </strong>
                 </MDBNavItem>
-                <MDBNavItem>
+                {/*<MDBNavItem>
                   <strong>Login</strong>
-                </MDBNavItem>
+                </MDBNavItem>*/}
               </MDBNavbarNav>
             </MDBCollapse>
           </MDBContainer>
