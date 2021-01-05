@@ -5,75 +5,50 @@
   justify-content: space-between;
 }
 
-// Custom colors
-.bg-dark {
-  background-color: $dark !important;
-  &.darken-1 {
-    background-color: darken($dark, 5%) !important;
+.navbar {
+  box-shadow: none;
+
+  svg {
+    max-height: 2rem;
   }
-  &.darken-2 {
-    background-color: darken($dark, 10%) !important;
-  }
-  &.darken-3 {
-    background-color: darken($dark, 15%) !important;
-  }
-  &.lighten-1 {
-    background-color: lighten($dark, 10%) !important;
-  }
-  &.lighten-2 {
-    background-color: lighten($dark, 20%) !important;
-  }
-  &.lighten-3 {
-    background-color: lighten($dark, 30%) !important;
-  }
-}
-.bg-red {
-  background-color: $red !important;
-  &.darken-1 {
-    background-color: darken($red, 10%) !important;
-  }
-  &.darken-2 {
-    background-color: darken($red, 20%) !important;
-  }
-  &.darken-3 {
-    background-color: darken($red, 30%) !important;
-  }
-  &.lighten-1 {
-    background-color: lighten($red, 10%) !important;
-  }
-  &.lighten-2 {
-    background-color: lighten($red, 20%) !important;
-  }
-  &.lighten-3 {
-    background-color: lighten($red, 30%) !important;
+
+  .nav-item {
+    color: white;
+    padding: 0.5rem;
+    cursor: pointer;
+
+    .button {
+      background: $blue;
+      padding: 0.5rem 0.8rem;
+      border-radius: 2rem;
+      transition: all 0.2s ease;
+
+      i {
+        margin-right: 0.4rem;
+      }
+
+      &:hover {
+        background: lighten($blue, 5%) !important;
+      }
+    }
   }
 }
-.bg-green {
-  background-color: $green !important;
-  &.darken-1 {
-    background-color: darken($green, 10%) !important;
-  }
-  &.darken-2 {
-    background-color: darken($green, 20%) !important;
-  }
-  &.darken-3 {
-    background-color: darken($green, 30%) !important;
-  }
-  &.lighten-1 {
-    background-color: lighten($green, 10%) !important;
-  }
-  &.lighten-2 {
-    background-color: lighten($green, 20%) !important;
-  }
-  &.lighten-3 {
-    background-color: lighten($green, 30%) !important;
-  }
+
+.bg-blue {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    180deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(0, 55, 121, 0.9) 50%,
+    rgba(0, 150, 214, 1) 100%
+  );
 }
 
 // Custom text
 .red-text {
   color: $red !important;
 }
+
 .pink-text {
   color: $pink !important;
 }
@@ -81,12 +56,15 @@
 // Buttons
 .btn {
   box-shadow: none !important;
+
   &:hover {
     box-shadow: none;
   }
+
   &:active {
     box-shadow: none;
   }
+
   &:focus {
     box-shadow: none;
   }

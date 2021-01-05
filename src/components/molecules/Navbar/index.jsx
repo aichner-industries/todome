@@ -14,6 +14,7 @@ import {
   MDBNavItem,
   MDBNavLink,
   MDBContainer,
+  MDBIcon,
 } from "mdbreact";
 
 // React Logo
@@ -49,13 +50,11 @@ class Navbar extends React.Component {
 
     return (
       <div>
-        <MDBNavbar color="white" light expand="md" fixed="top" scrolling>
+        <MDBNavbar color="transparent" dark expand="md" fixed="top" scrolling>
           <MDBContainer>
             <MDBNavbarBrand href="/" className="py-0 font-weight-bold">
-              <Logo style={{ height: "2.5rem", width: "2.5rem" }} />
-              <strong className="align-middle">
-                MDB React Firebase Template
-              </strong>
+              <Logo />
+              <strong className="align-middle">TodoMe</strong>
             </MDBNavbarBrand>
             <MDBNavbarToggler
               onClick={this.toggleCollapse("mainNavbarCollapse")}
@@ -67,22 +66,13 @@ class Navbar extends React.Component {
             >
               <MDBNavbarNav right>
                 <MDBNavItem>
-                  <MDBNavLink
-                    exact
-                    to="/"
-                    onClick={this.closeCollapse("mainNavbarCollapse")}
-                  >
-                    <strong>Home</strong>
-                  </MDBNavLink>
+                  <strong className="button">
+                    <MDBIcon icon="share" />
+                    Share
+                  </strong>
                 </MDBNavItem>
                 <MDBNavItem>
-                  <MDBNavLink
-                    exact
-                    to="/login"
-                    onClick={this.closeCollapse("mainNavbarCollapse")}
-                  >
-                    <strong>Login</strong>
-                  </MDBNavLink>
+                  <strong>Login</strong>
                 </MDBNavItem>
               </MDBNavbarNav>
             </MDBCollapse>

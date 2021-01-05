@@ -17,6 +17,10 @@ import {
   MDBCardTitle,
   MDBCardImage,
   MDBCardText,
+  MDBListGroup,
+  MDBListGroupItem,
+  MDBInput,
+  MDBBtn,
 } from "mdbreact";
 
 //> Images
@@ -33,10 +37,32 @@ import "./HomePage.scss";
 
 //#region > Components
 class HomePage extends React.Component {
+  state = {
+    tasks: [],
+    enterTask: "",
+  };
+
+  handleKeyDown = (e) => {
+    if (e.key === "Enter" && this.state.enterTask) {
+      this.setState({
+        tasks: [
+          ...this.state.tasks,
+          {
+            value: this.state.enterTask,
+            timestamp: new Date().getTime(),
+            checked: false,
+          },
+        ],
+        enterChecked: false,
+        enterTask: "",
+      });
+    }
+  };
+
   render() {
     return (
       <>
-        <MDBEdgeHeader color="bg-red" className="sectionPage" />
+        <MDBEdgeHeader color="bg-blue" className="sectionPage" />
         <div className="mt-3 mb-5">
           <MDBFreeBird>
             <MDBRow>
@@ -45,41 +71,74 @@ class HomePage extends React.Component {
                 className="mx-auto float-none white py-2 px-2 border"
               >
                 <MDBCardBody className="text-center">
-                  <h2 className="h2-responsive mb-4">
-                    <strong className="font-weight-bold">
-                      <img
-                        src={AgencyLogo}
-                        alt="mdbreact-logo"
-                        className="pr-2"
-                      />
-                      +
-                      <img
-                        src={MDBLogo}
-                        alt="mdbreact-logo"
-                        className="pr-2 pl-2"
-                      />
-                      Template App
-                    </strong>
+                  <h2 className="h2-responsive mb-4 font-weight-bold">
+                    Enhance your workflows
                   </h2>
-                  <MDBRow />
-                  <p>React Bootstrap with Material Design</p>
-                  <p className="pb-4">
-                    This application shows the actual use of MDB React
-                    components in the application.
-                  </p>
-                  <MDBRow className="d-flex flex-row justify-content-center row">
-                    <a
-                      className="border nav-link border-light rounded mr-1"
-                      href="https://mdbootstrap.com/react/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <MDBIcon icon="graduation-cap" className="mr-2" />
-                      <span className="font-weight-bold">
-                        Official Documentation
-                      </span>
-                    </a>
-                  </MDBRow>
+                  <MDBListGroup>
+                    <MDBListGroupItem>
+                      <div className="main-container">
+                        <div>
+                          <MDBInput
+                            type="checkbox"
+                            size="lg"
+                            checked={this.state.enterChecked}
+                            onClick={(e) =>
+                              this.setState({ test: e.target.enterChecked })
+                            }
+                            id="enterChecked"
+                          />
+                        </div>
+                        <div className="d-flex">
+                          <MDBInput
+                            type="text"
+                            value={this.state.enterTask}
+                            getValue={(val) =>
+                              this.setState({ enterTask: val })
+                            }
+                            onKeyDown={this.handleKeyDown}
+                          />
+                        </div>
+                      </div>
+                      {this.state.enterTask && (
+                        <div className="text-right">
+                          <p className="mb-0 small text-muted">
+                            Press ENTER to add task
+                          </p>
+                        </div>
+                      )}
+                    </MDBListGroupItem>
+                    {this.state.tasks.length > 0 && (
+                      <p className="font-weight-bold text-left mb-0">
+                        Open tasks
+                      </p>
+                    )}
+                    {this.state.tasks.reverse().map((task, t) => {
+                      return (
+                        <MDBListGroupItem>
+                          <div className="main-container">
+                            <div>
+                              <MDBInput
+                                type="checkbox"
+                                size="lg"
+                                checked={this.state.enterChecked}
+                                onClick={(e) =>
+                                  this.setState({ test: e.target.enterChecked })
+                                }
+                                id="enterChecked"
+                              />
+                            </div>
+                            <div className="d-flex">
+                              <MDBInput
+                                type="text"
+                                value={task.value}
+                                onKeyDown={this.handleKeyDown}
+                              />
+                            </div>
+                          </div>
+                        </MDBListGroupItem>
+                      );
+                    })}
+                  </MDBListGroup>
                 </MDBCardBody>
               </MDBCol>
             </MDBRow>
@@ -88,7 +147,7 @@ class HomePage extends React.Component {
             <MDBRow>
               <MDBCol md="12" className="mt-4">
                 <h2 className="text-center my-5 font-weight-bold">
-                  Why is it so great?
+                  Share. Collaborate. Build.
                 </h2>
                 <p className="text-center text-muted mb-1">
                   Google has designed a Material Design to make the web more
@@ -102,39 +161,6 @@ class HomePage extends React.Component {
                   We present you a framework containing the best features of
                   both of them - Material Design for Bootstrap.
                 </p>
-                <hr className="my-5" />
-                <MDBRow id="categories" className="justify-content-center">
-                  <MDBCol md="4">
-                    <MDBCard cascade className="my-3 grey lighten-4">
-                      <MDBCardImage
-                        cascade
-                        className="img-fluid"
-                        src={Projects}
-                      />
-                      <MDBCardBody cascade className="text-center">
-                        <MDBCardTitle>
-                          <MDBIcon
-                            icon="github"
-                            brand
-                            className="dark-text pr-2"
-                          />
-                          <strong>GitHub</strong>
-                        </MDBCardTitle>
-                        <MDBCardText>
-                          Find more of our amazing work and templates on GitHub!
-                        </MDBCardText>
-                        <a
-                          className="btn btn-outline-mdb-color btn-sm btn-rounded d-inline"
-                          href="https://github.com/aichner"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          More
-                        </a>
-                      </MDBCardBody>
-                    </MDBCard>
-                  </MDBCol>
-                </MDBRow>
               </MDBCol>
             </MDBRow>
           </MDBContainer>
