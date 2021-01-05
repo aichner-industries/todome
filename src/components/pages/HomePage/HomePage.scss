@@ -4,6 +4,12 @@ body {
   background: #fff;
 }
 
+.add-task {
+  label {
+    left: 1rem;
+  }
+}
+
 .list-group {
   p {
     &.font-weight-bold {

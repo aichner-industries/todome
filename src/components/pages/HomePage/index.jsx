@@ -300,7 +300,9 @@ class HomePage extends React.Component {
                             getValue={(val) =>
                               this.setState({ enterTask: val })
                             }
+                            containerClass="add-task"
                             onKeyDown={this.handleKeyDown}
+                            label="Add task"
                           />
                         </div>
                       </div>
