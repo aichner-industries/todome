@@ -51,12 +51,12 @@ class Navbar extends React.Component {
     return (
       <div>
         <MDBNavbar color="transparent" dark expand="md" fixed="top" scrolling>
-          <MDBContainer>
+          <MDBContainer className="py-3 py-sm-2">
             <MDBNavbarBrand href="/" className="py-0 font-weight-bold">
               <Logo />
               <strong className="align-middle">TodoMe</strong>
             </MDBNavbarBrand>
-            <strong className="button">
+            <strong className="button d-sm-none d-block">
               <MDBIcon icon="share" />
               Share
             </strong>
