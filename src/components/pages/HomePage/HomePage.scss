@@ -1,57 +1,117 @@
+@import "../../../utilities/variables";
+
 body {
   background: #fff;
 }
 
-a.border.nav-link.border-light.rounded.mr-1 {
-  color: #3f729b;
+.add-task {
+  label {
+    left: 1rem;
+  }
 }
 
-a.border.nav-link.border-light.rounded.mr-1:hover {
-  color: #1c2331;
-}
+.list-group {
+  p {
+    &.font-weight-bold {
+      cursor: pointer;
+    }
 
-.btn.btn-sm.indigo:hover {
-  color: #fff;
-}
+    .fa-angle-down {
+      transform: rotate(0deg);
+      transition: transform 0.2s linear;
+      margin-right: 0.2rem;
 
-.nav-link.active {
-  background-color: rgba(255, 255, 255, 0.1);
-}
+      &.open {
+        transform: rotate(180deg);
+        transition: transform 0.2s linear;
+      }
+    }
+  }
 
-#categories > .col-md-4.mb-5 {
-  margin-bottom: 8rem !important;
-}
-.sectionPage {
-  position: relative;
-  top: -15px;
-  margin-bottom: -125px;
-}
+  .open-tasks {
+    .form-check-input[type="checkbox"]:checked:disabled + label:before,
+    label.btn input[type="checkbox"]:checked:disabled + label:before {
+      border-right: 2px solid $green;
+      border-bottom: 2px solid $green;
+    }
+  }
 
-.home-feature-box .fa {
-  font-size: 6rem;
-}
+  .done-tasks {
+    .form-check-input[type="checkbox"]:checked + label:before {
+      border-right: 2px solid lightgrey;
+      border-bottom: 2px solid lightgrey;
+    }
 
-.home-feature-box span {
-  display: block;
-  color: #111;
-  font-weight: bold;
-  margin-top: 1.5rem;
-}
+    .task-value {
+      text-decoration: line-through;
+    }
+  }
 
-.example-components-list li > a {
-  color: #495057;
-}
+  .list-group-item {
+    padding: 0;
+    border: none;
 
-.example-components-list li:last-child > a {
-  border-bottom: 0;
-}
+    .position-absolute {
+      right: 0;
+      top: 0;
+    }
 
-.example-components-list li > a .fa {
-  color: rgba(0, 0, 0, 0.35);
-  float: right;
+    &.first {
+      margin-bottom: 2rem;
+    }
+
+    &.task {
+      cursor: pointer;
+
+      &.edit {
+        cursor: default;
+
+        &:hover {
+          background: white;
+        }
+      }
+
+      &:hover {
+        background: lighten($blue, 56%);
+      }
+    }
+
+    .main-container {
+      display: flex;
+
+      div {
+        display: inline-block;
+
+        &:first-child {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0 1rem;
+
+          .form-check {
+            padding: 0;
+            width: auto;
+
+            .form-check-label {
+              padding: 0;
+            }
+          }
+        }
+
+        &:last-child {
+          width: 100%;
+
+          .md-form {
+            margin: 0;
+            padding-right: 0;
+          }
+        }
+      }
+    }
+  }
 }
 
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2020 Werbeagentur Christian Aichner
+ * Copyright © 2021 Christian Aichner
  */

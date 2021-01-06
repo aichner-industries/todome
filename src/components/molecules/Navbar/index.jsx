@@ -14,6 +14,7 @@ import {
   MDBNavItem,
   MDBNavLink,
   MDBContainer,
+  MDBIcon,
 } from "mdbreact";
 
 // React Logo
@@ -49,17 +50,16 @@ class Navbar extends React.Component {
 
     return (
       <div>
-        <MDBNavbar color="white" light expand="md" fixed="top" scrolling>
-          <MDBContainer>
+        <MDBNavbar color="transparent" dark expand="md" fixed="top" scrolling>
+          <MDBContainer className="py-3 py-sm-2">
             <MDBNavbarBrand href="/" className="py-0 font-weight-bold">
-              <Logo style={{ height: "2.5rem", width: "2.5rem" }} />
-              <strong className="align-middle">
-                MDB React Firebase Template
-              </strong>
+              <Logo />
+              <strong className="align-middle">TodoMe</strong>
             </MDBNavbarBrand>
-            <MDBNavbarToggler
-              onClick={this.toggleCollapse("mainNavbarCollapse")}
-            />
+            <strong className="button d-sm-none d-block">
+              <MDBIcon icon="share" />
+              Share
+            </strong>
             <MDBCollapse
               id="mainNavbarCollapse"
               isOpen={this.state.collapseID}
@@ -67,23 +67,14 @@ class Navbar extends React.Component {
             >
               <MDBNavbarNav right>
                 <MDBNavItem>
-                  <MDBNavLink
-                    exact
-                    to="/"
-                    onClick={this.closeCollapse("mainNavbarCollapse")}
-                  >
-                    <strong>Home</strong>
-                  </MDBNavLink>
+                  <strong className="button">
+                    <MDBIcon icon="share" />
+                    Share
+                  </strong>
                 </MDBNavItem>
-                <MDBNavItem>
-                  <MDBNavLink
-                    exact
-                    to="/login"
-                    onClick={this.closeCollapse("mainNavbarCollapse")}
-                  >
-                    <strong>Login</strong>
-                  </MDBNavLink>
-                </MDBNavItem>
+                {/*<MDBNavItem>
+                  <strong>Login</strong>
+                </MDBNavItem>*/}
               </MDBNavbarNav>
             </MDBCollapse>
           </MDBContainer>
@@ -101,5 +92,5 @@ export default Navbar;
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2020 Werbeagentur Christian Aichner
+ * Copyright © 2021 Christian Aichner
  */
