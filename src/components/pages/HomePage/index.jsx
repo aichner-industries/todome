@@ -52,6 +52,13 @@ const rememberOpen = (type, value) => {
 };
 //#endregion
 
+//#region > Config
+const bell = new UIfx(soundOne, {
+  volume: 0.5, // number between 0.0 ~ 1.0
+  throttleMs: 100,
+});
+//#endregion
+
 //#region > Components
 class HomePage extends React.Component {
   state = {
@@ -246,11 +253,6 @@ class HomePage extends React.Component {
   };
 
   playSound = () => {
-    const bell = new UIfx(soundOne, {
-      volume: 0.5, // number between 0.0 ~ 1.0
-      throttleMs: 100,
-    });
-
     bell.play();
   };
 
