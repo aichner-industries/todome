@@ -67,6 +67,14 @@ main {
 .btn {
   box-shadow: none !important;
 
+  &.btn-blue {
+    background: $blue !important;
+
+    &:hover {
+      background: lighten($blue, 5%) !important;
+    }
+  }
+
   &:hover {
     box-shadow: none;
   }

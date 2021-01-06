@@ -17,6 +17,9 @@ import {
   MDBIcon,
 } from "mdbreact";
 
+//> Components
+import { ShareModal } from "../../organisms";
+
 // React Logo
 import { ReactComponent as Logo } from "../../../assets/logo.svg";
 //#endregion
@@ -67,7 +70,10 @@ class Navbar extends React.Component {
             >
               <MDBNavbarNav right>
                 <MDBNavItem>
-                  <strong className="button">
+                  <strong
+                    className="button"
+                    onClick={() => this.setState({ share: true })}
+                  >
                     <MDBIcon icon="share" />
                     Share
                   </strong>
@@ -80,6 +86,9 @@ class Navbar extends React.Component {
           </MDBContainer>
         </MDBNavbar>
         {collapseID && overlay}
+        {this.state.share && (
+          <ShareModal toggle={() => this.setState({ share: false })} />
+        )}
       </div>
     );
   }
