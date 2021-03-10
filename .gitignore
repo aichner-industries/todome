@@ -11,13 +11,13 @@ package-lock.json
 /build
 
 # MDB
-mdb*
+#mdb*
 
 # Firebase configuration
-src/config/fbConfig.js
+#src/config/fbConfig.js
 
 # Environment variables
-.env
+#.env
 
 # All editor configs but vscode
 .editorconfig
